@@ -1,2 +1,11 @@
 {
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "birthday_reminder",
+            "database": "${workspaceFolder:birthday-reminder}/database.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }
