@@ -27,11 +27,11 @@ def read_articles(status: bool, limit: Optional[int] = None):
 
 
 @app.post("/users")
-def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud_user.create(db=db, user=user)
 
 @app.get("/users" , response_model = schemas.UserBase)
 def get_users(db: Session = Depends(get_db)):
-    users = crud_user.get(db = db)
+    users = crud_user.all(db = db)
     
     # return crud_user.get_users(db = db)
