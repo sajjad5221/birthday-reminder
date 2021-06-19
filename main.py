@@ -1,12 +1,19 @@
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-import models
+import models,schemas,crud_user
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
@@ -19,6 +26,12 @@ def read_articles(status: bool, limit: Optional[int] = None):
     return {"message": f"{limit},{status} of data"}
 
 
-# @app.post("/user")
-# def register(request: models.User):
-#     return {"email": request.email}
+@app.post("/users")
+def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    return crud_user.create(db=db, user=user)
+
+@app.get("/users" , response_model = schemas.UserBase)
+def get_users(db: Session = Depends(get_db)):
+    users = crud_user.get(db = db)
+    
+    # return crud_user.get_users(db = db)
