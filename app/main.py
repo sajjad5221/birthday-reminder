@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from app.db.database import SessionLocal, engine
 from sqlalchemy.orm import Session
 from app.db import models, schemas
-from app.routers import users
+from app.routers import users,authentication
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -31,3 +31,4 @@ def root():
 
     # return crud_user.get_users(db = db)
 app.include_router(users.router)
+app.include_router(authentication.router)

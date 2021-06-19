@@ -17,7 +17,7 @@ def create(db: Session, user: schemas.UserCreate):
         raise HTTPException(status_code=422, detail="User exist")
     else:
         db_user = models.User(
-            email=user.email, hashed_password=hashing.Hash.bcrypt(user.password))
+            email=user.email, password=hashing.Hash.bcrypt(user.password))
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
